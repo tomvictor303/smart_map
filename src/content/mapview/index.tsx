@@ -7,10 +7,15 @@ import MapboxCard from './MapboxCard';
 import TodoCard from './TodoCard';
 import DistCard from './DistCard';
 
+const MapviewWrapper = styled(Box)(
+  () => `
+    overflow: hidden; 
+`
+);
 
 function Mapview() {
   return (
-    <>
+    <MapviewWrapper>
       <Helmet>
         <title>Smart Map</title>
       </Helmet>
@@ -26,7 +31,7 @@ function Mapview() {
           <MapboxCard />
         </Grid>  
       </Grid>
-    </>
+    </MapviewWrapper>
   );
 }
 

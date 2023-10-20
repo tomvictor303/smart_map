@@ -8,8 +8,8 @@ import Typography from '@mui/material/Typography';
 
 const DistCard = () => {
   return (<>
-    <Divider />
     <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red" }}>
+      <Divider />
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           Word of the Day
