@@ -11,7 +11,7 @@ import mapboxgl, { Coordinate } from 'mapbox-gl';
 
 import ControlPanel from './control-panel';
 import Pin from './Pin';
-import CITIES from './cities.json';
+import CLUSTERS from './clusters.json';
 
 const TOKEN = process.env.REACT_APP_MAPBOX_API_TOKEN; // Set your mapbox token here
 
@@ -20,11 +20,11 @@ function MapboxCard() {
 
   const pins = useMemo(
     () =>
-      CITIES.map((city, index) => (
+      CLUSTERS.map((city, index) => (
         <Marker
           key={`marker-${index}`}
-          longitude={city.longitude}
-          latitude={city.latitude}
+          longitude={city.lon}
+          latitude={city.lat}
           anchor="bottom"
           onClick={e => {
             // If we let the click event propagates to the map, it will immediately close the popup
