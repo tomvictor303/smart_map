@@ -1,9 +1,11 @@
-import { Box, Container, Card } from '@mui/material';
+import { Box, Container, Card, Grid, Divider, Stack } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 
 import { styled } from '@mui/material/styles';
-import Logo from 'src/components/LogoSign';
+
 import MapboxCard from './MapboxCard';
+import TodoCard from './TodoCard';
+import DistCard from './DistCard';
 
 
 function Mapview() {
@@ -12,7 +14,18 @@ function Mapview() {
       <Helmet>
         <title>Smart Map</title>
       </Helmet>
-      <MapboxCard />
+
+      <Grid container>
+        <Grid item xs={3}>
+          <Stack spacing={0}>
+            <TodoCard />
+            <DistCard />
+          </Stack>
+        </Grid>
+        <Grid item xs={9}>
+          <MapboxCard />
+        </Grid>  
+      </Grid>
     </>
   );
 }

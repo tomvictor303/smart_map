@@ -20,17 +20,17 @@ function MapboxCard() {
 
   const pins = useMemo(
     () =>
-      CLUSTERS.map((city, index) => (
+      CLUSTERS.map((cluster, index) => (
         <Marker
           key={`marker-${index}`}
-          longitude={city.lon}
-          latitude={city.lat}
+          longitude={cluster.lon}
+          latitude={cluster.lat}
           anchor="bottom"
           onClick={e => {
             // If we let the click event propagates to the map, it will immediately close the popup
             // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
-            setPopupInfo(city);
+            // setPopupInfo(cluster);
           }}
         >
           <Pin />
