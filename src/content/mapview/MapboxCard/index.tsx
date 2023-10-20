@@ -50,7 +50,7 @@ function MapboxCard() {
           pitch: 0
         }}
         // mapStyle="mapbox://styles/mapbox/dark-v9"
-        mapStyle="mapbox://styles/mapbox/streets-v12"
+        mapStyle="mapbox://styles/mapbox/streets-v9"
         mapboxAccessToken={TOKEN}
             style={{ height: "100vh", width: "100%" }}
       >
