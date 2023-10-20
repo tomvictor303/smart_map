@@ -16,6 +16,7 @@ const Loader = (Component) => (props) =>
 
 // Pages
 
+const Mapview = Loader(lazy(() => import('src/content/mapview')));
 const Overview = Loader(lazy(() => import('src/content/overview')));
 
 // Dashboards
@@ -83,10 +84,10 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Overview />
+        element: <Mapview />
       },
       {
-        path: 'overview',
+        path: 'mapview',
         element: <Navigate to="/" replace />
       },
       {
