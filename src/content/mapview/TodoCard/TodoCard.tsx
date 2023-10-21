@@ -14,33 +14,35 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 
+
+const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}) => 
+  <ListItem disablePadding 
+    secondaryAction={
+      <Button variant="outlined"
+        size="small"
+        style={{minWidth: "32px", padding: 5}}
+        onClick={e => {
+          onClickDeleteTodo?.(listIndex);
+        }}
+      >
+        <DeleteIcon />
+      </Button>
+    }
+  >
+    <ListItemButton>
+      <ListItemText 
+        primary={value?.company} 
+        secondary={value?.lat + '  ' + value?.lon}
+      />
+    </ListItemButton>
+  </ListItem>
+);
+
 const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
   return (
     <List>
-      {items.map((value, index) => (<> 
-        <ListItem 
-          disablePadding 
-          key={`item-${index}`}
-          secondaryAction={
-            <Button
-              size="small"
-              style={{minWidth: "32px", padding: 5}}
-              onClick={e => {
-                console.log(index);
-                onClickDeleteTodo?.(index);
-              }}
-            >
-              <DeleteIcon />
-            </Button>
-          }
-        >
-          <ListItemButton>
-            <ListItemText 
-              primary={value?.company} 
-              secondary={value?.lat + '  ' + value?.lon}
-            />
-          </ListItemButton>
-        </ListItem>
+      {items.map((value, index) => (<>
+        <SortableItem key={`item-${index}`} index={index} value={value} listIndex={index} onClickDeleteTodo={onClickDeleteTodo}/>
       </>))}
     </List>
   );
