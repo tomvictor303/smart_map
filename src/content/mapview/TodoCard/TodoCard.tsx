@@ -1,5 +1,5 @@
-import { Box, Container, Card, Divider } from '@mui/material';
-import { useState } from 'react';
+import { Box, Container, Card, Divider, Stack } from '@mui/material';
+import { useState, useCallback } from 'react';
 
 import { styled } from '@mui/material/styles';
 import CardActions from '@mui/material/CardActions';
@@ -11,28 +11,59 @@ import { DropResult } from 'react-beautiful-dnd';
 import DraggableList from './DraggableList';
 import { getSampleItems, reorder } from './helpers';
 
-const TodoCard = () => {
-  const [items, setItems] = useState(getSampleItems());
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import InboxIcon from '@mui/icons-material/Inbox';
 
-  const onDragEnd = ({ destination, source }: DropResult) => {
-    // dropped outside the list
-    if (!destination) return;
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+import { arrayMoveImmutable } from 'array-move';
 
-    const newItems = reorder(items, source.index, destination.index);
 
-    setItems(newItems);
-  };
-  
+const SortableItem = SortableElement(({value}) => 
+  <ListItem disablePadding 
+    secondaryAction={
+      <IconButton edge="end" aria-label="delete">
+        <DeleteIcon />
+      </IconButton>
+    }
+  >
+    <ListItemButton>
+      <ListItemText 
+        primary={value?.company} 
+        secondary={value?.lat + '  ' + value?.lon}
+      />
+    </ListItemButton>
+    <ListItemButton> 
+    </ListItemButton>
+  </ListItem>
+);
+
+const SortableList = SortableContainer(({items}) => {
   return (
-    <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red" }}>
+    <List>
+      {items.map((value, index) => (
+        <SortableItem key={`item-${value}`} index={index} value={value} />
+      ))}
+    </List>
+  );
+});
+
+const TodoCard = ({items, setItems}) => {
+
+  const onSortEnd = useCallback( ({oldIndex, newIndex}) => {
+    const list = arrayMoveImmutable(items, oldIndex, newIndex);
+    setItems(list);
+  }, [items]);
+
+  return <>
+    <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red", overflowY: "auto" }}>
       <CardContent>        
-        <DraggableList items={items} onDragEnd={onDragEnd} />
+        <SortableList items={items} onSortEnd={onSortEnd} />
       </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
+      <CardActions> 
       </CardActions>
     </Card>
-  );
-};
+  </>;
+}
 
 export default TodoCard;

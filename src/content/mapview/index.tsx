@@ -1,4 +1,6 @@
 import { Box, Container, Card, Grid, Divider, Stack } from '@mui/material';
+import { useState, useCallback } from 'react';
+
 import { Helmet } from 'react-helmet-async';
 
 import { styled } from '@mui/material/styles';
@@ -14,6 +16,15 @@ const MapviewWrapper = styled(Box)(
 );
 
 function Mapview() {
+  const [todos, setTodos] = useState([]);
+  const onClickMapPin = useCallback((pinData) => {
+    setTodos(prevTodos => [ ...prevTodos, {
+      company: pinData.company,
+      lat: pinData.lat,
+      lon: pinData.lon,
+    }]);
+  }, [todos]);
+
   return (
     <MapviewWrapper>
       <Helmet>
@@ -23,12 +34,12 @@ function Mapview() {
       <Grid container>
         <Grid item xs={3}>
           <Stack spacing={0}>
-            <TodoCard />
+            <TodoCard items={todos} setItems={setTodos} />
             <DistCard />
           </Stack>
         </Grid>
         <Grid item xs={9}>
-          <MapboxCard />
+          <MapboxCard onClickPin={onClickMapPin} />
         </Grid>  
       </Grid>
     </MapviewWrapper>
