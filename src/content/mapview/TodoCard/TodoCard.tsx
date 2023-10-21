@@ -7,10 +7,6 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { DropResult } from 'react-beautiful-dnd';
-import DraggableList from './DraggableList';
-import { getSampleItems, reorder } from './helpers';
-
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InboxIcon from '@mui/icons-material/Inbox';
