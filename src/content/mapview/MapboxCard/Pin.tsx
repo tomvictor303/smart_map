@@ -12,11 +12,13 @@ const pinStyle = {
   zIndex: 5,
 };
 
-function Pin({size = 20}) {
+function Pin({radius = 20}) { 
+  let r = radius * 200;
+  r = r > 4 ? r : 4;
   return (
-    <svg height={size} viewBox="0 0 24 24" style={pinStyle}>
+    <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
       {/* <path d={ICON} /> */}
-      <circle cx="12" cy="12" r="12" stroke="black" width="3" fill="red" />
+      <circle cx={r} cy={r} r={r} stroke="black" width="3" fill="red" />
     </svg>
   );
 }
