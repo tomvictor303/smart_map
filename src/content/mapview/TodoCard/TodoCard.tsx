@@ -14,39 +14,34 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 
-
-const SortableItem = SortableElement(({value, index, onClickDeleteTodo}) => 
-  <ListItem disablePadding 
-    secondaryAction={
-      <Button variant="outlined"
-        size="small"
-        style={{minWidth: "32px", padding: 5}}
-        onClick={e => {
-          console.log( value?.id )
-          if ( value?.id ) {
-            onClickDeleteTodo?.(value.id);
-          }
-        }}
-      >
-        <DeleteIcon />
-      </Button>
-    }
-  >
-    <ListItemButton>
-      <ListItemText 
-        primary={'#'+value?.id +' ' +value?.company} 
-        secondary={value?.lat + '  ' + value?.lon}
-      />
-    </ListItemButton>
-  </ListItem>
-);
-
 const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
   return (
     <List>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${value?.id}`} index={index} value={value} onClickDeleteTodo={onClickDeleteTodo}/>
-      ))}
+      {items.map((value, index) => (<> 
+        <ListItem 
+          disablePadding 
+          key={`item-${index}`}
+          secondaryAction={
+            <Button
+              size="small"
+              style={{minWidth: "32px", padding: 5}}
+              onClick={e => {
+                console.log(index);
+                onClickDeleteTodo?.(index);
+              }}
+            >
+              <DeleteIcon />
+            </Button>
+          }
+        >
+          <ListItemButton>
+            <ListItemText 
+              primary={value?.company} 
+              secondary={value?.lat + '  ' + value?.lon}
+            />
+          </ListItemButton>
+        </ListItem>
+      </>))}
     </List>
   );
 });

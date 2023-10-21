@@ -20,16 +20,7 @@ function Mapview() {
 
   const onClickMapPin = useCallback((pinData) => {
     setTodos(prevTodos => {
-      // BEGIN assign_id
-      let maxId = 0;
-      for (let i = 0; i< prevTodos.length; i++) {
-        if(maxId < prevTodos[i].id) {
-          maxId = prevTodos[i].id;
-        }
-      } // END assign_id
-
-      return [ ...prevTodos, {
-        id: maxId + 1,
+      return [ ...prevTodos, { 
         company: pinData.company,
         lat: pinData.lat,
         lon: pinData.lon,
@@ -37,8 +28,8 @@ function Mapview() {
     });
   }, []);
 
-  const onClickDeleteTodo = useCallback((deleteId) => {
-    setTodos(prevTodos => prevTodos.filter((value, index) => value.id !== deleteId));
+  const onClickDeleteTodo = useCallback((deleteIndex) => {
+    setTodos(prevTodos => prevTodos.filter((value, index) => index !== deleteIndex));
   }, []);
 
   return (
