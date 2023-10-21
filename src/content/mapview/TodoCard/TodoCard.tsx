@@ -14,7 +14,9 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
 
-
+// index prop is not passed to ListItem
+// It 's stopped to pass in SortableElement
+// So I give listIndex
 const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}) => 
   <ListItem disablePadding 
     secondaryAction={
