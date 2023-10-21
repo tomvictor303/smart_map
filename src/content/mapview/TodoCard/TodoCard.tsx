@@ -18,19 +18,9 @@ import { arrayMoveImmutable } from 'array-move';
 const SortableItem = SortableElement(({value, index, onClickDeleteTodo}) => 
   <ListItem disablePadding 
     secondaryAction={
-      // <IconButton edge="end" aria-label="delete"
-      //   style={{zIndex: 9999999}}
-      //   onClick={e => {
-      //     console.log( value?.id )
-      //     if ( value?.id ) {
-      //       onClickDeleteTodo?.(value.id);
-      //     }
-      //   }}
-      // >
-      //   <DeleteIcon />
-      // </IconButton>
       <Button variant="outlined"
         size="small"
+        style={{minWidth: "32px", padding: 5}}
         onClick={e => {
           console.log( value?.id )
           if ( value?.id ) {
