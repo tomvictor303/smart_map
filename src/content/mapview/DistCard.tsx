@@ -5,29 +5,31 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
+import getPreciseDistance from 'geolib/es/getPreciseDistance';
 
-const DistCard = () => {
+const DistCard = ({ items }) => {
+  const list = [];
+  for (let i = 0; i < items.length - 1; i++) {  
+    list.push(getPreciseDistance(
+      { latitude: items[i].lat, longitude: items[i].lon },
+      { latitude: items[i + 1].lat, longitude: items[i + 1].lon }
+    ));
+  }
+
   return (<>
-    <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red" }}>
+    <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red", overflowY: "auto" }}>
       <Divider />
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          belent
-        </Typography>
-        <Typography sx={{ mb: 1.5 }} color="text.secondary">
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
+      <CardContent> 
+        {list.map((value, index) => (<>            
+          <Box textAlign={'right'} marginBottom={1}>
+            <Typography >
+              {Number(value/1000).toFixed(1) + ' km'}
+            </Typography>
+          </Box>
+        </>))} 
       </CardContent>
       <CardActions>
-        <Button size="small">Learn More</Button>
       </CardActions>
     </Card>
   </>);

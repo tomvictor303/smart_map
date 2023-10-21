@@ -42,7 +42,7 @@ function Mapview() {
         <Grid item xs={3}>
           <Stack spacing={0}>
             <TodoCard items={todos} setItems={setTodos} onClickDeleteTodo={onClickDeleteTodo} />
-            <DistCard />
+            <DistCard items={todos} />
           </Stack>
         </Grid>
         <Grid item xs={9}>
