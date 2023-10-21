@@ -17,13 +17,29 @@ const MapviewWrapper = styled(Box)(
 
 function Mapview() {
   const [todos, setTodos] = useState([]);
+
   const onClickMapPin = useCallback((pinData) => {
-    setTodos(prevTodos => [ ...prevTodos, {
-      company: pinData.company,
-      lat: pinData.lat,
-      lon: pinData.lon,
-    }]);
-  }, [todos]);
+    setTodos(prevTodos => {
+      // BEGIN assign_id
+      let maxId = 0;
+      for (let i = 0; i< prevTodos.length; i++) {
+        if(maxId < prevTodos[i].id) {
+          maxId = prevTodos[i].id;
+        }
+      } // END assign_id
+
+      return [ ...prevTodos, {
+        id: maxId + 1,
+        company: pinData.company,
+        lat: pinData.lat,
+        lon: pinData.lon,
+      }]
+    });
+  }, []);
+
+  const onClickDeleteTodo = useCallback((deleteId) => {
+    setTodos(prevTodos => prevTodos.filter((value, index) => value.id !== deleteId));
+  }, []);
 
   return (
     <MapviewWrapper>
@@ -34,7 +50,7 @@ function Mapview() {
       <Grid container>
         <Grid item xs={3}>
           <Stack spacing={0}>
-            <TodoCard items={todos} setItems={setTodos} />
+            <TodoCard items={todos} setItems={setTodos} onClickDeleteTodo={onClickDeleteTodo} />
             <DistCard />
           </Stack>
         </Grid>
