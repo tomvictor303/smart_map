@@ -12,13 +12,17 @@ const pinStyle = {
   zIndex: 5,
 };
 
-function Pin({radius = 20}) { 
+function Pin({radius = 20, deviceCount}) { 
   let r = radius * 200;
   r = r > 4 ? r : 4;
+  const color = 
+    deviceCount < 5 ? "#6838ad":
+    deviceCount < 10 ? "blue":
+    deviceCount < 15 ? "orange": "red"
   return (
     <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
       {/* <path d={ICON} /> */}
-      <circle cx={r} cy={r} r={r} stroke="black" width="3" fill="red" />
+      <circle cx={r} cy={r} r={r}  width="3" fill={color} />
     </svg>
   );
 }
