@@ -1,3 +1,4 @@
+import { Tooltip } from '@mui/material';
 import zIndex from '@mui/material/styles/zIndex';
 import * as React from 'react';
 
@@ -12,18 +13,21 @@ const pinStyle = {
   zIndex: 5,
 };
 
-function Pin({radius = 20, deviceCount}) { 
+function Pin({radius = 20, deviceCount, tooltipText=''}) { 
   let r = radius * 200;
-  r = r > 4 ? r : 4;
+  r = r > 8 ? r : 8;
+
   const color = 
     deviceCount < 5 ? "#6838ad":
     deviceCount < 10 ? "blue":
     deviceCount < 15 ? "orange": "red"
   return (
-    <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
-      {/* <path d={ICON} /> */}
-      <circle cx={r} cy={r} r={r}  width="3" fill={color} />
-    </svg>
+    <Tooltip title={tooltipText} placement="top">
+      <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
+        {/* <path d={ICON} /> */}
+        <circle cx={r} cy={r} r={r}  width="3" fill={color} />
+      </svg>
+    </Tooltip>
   );
 }
 

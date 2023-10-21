@@ -34,7 +34,10 @@ function MapboxCard({ onClickPin }) {
             // setPopupInfo(cluster);
           }}
         >
-          <Pin radius={cluster.yard_radius} deviceCount={cluster.devices}/>
+          <Pin 
+            radius={cluster.yard_radius} deviceCount={cluster.devices}
+            tooltipText={`${cluster.company} : ${cluster.devices} devices`}
+          />
         </Marker>
       )),
     []
