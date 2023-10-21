@@ -7,7 +7,7 @@ import Map, { Marker, Popup, NavigationControl, FullscreenControl, ScaleControl,
 import MapboxClient from '@mapbox/mapbox-sdk/lib/classes/mapi-client';
 import GeocodingService, { GeocodeFeature, GeocodeRequest } from '@mapbox/mapbox-sdk/services/geocoding';
 import mapboxgl, { Coordinate } from 'mapbox-gl';
-// (mapboxgl as any).workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
+(mapboxgl as any).workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 import ControlPanel from './control-panel';
 import Pin from './Pin';
