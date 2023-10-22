@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 // mapbox
 import Map, { Marker, Popup, NavigationControl, FullscreenControl, ScaleControl, GeolocateControl } from 'react-map-gl';
 import MapboxClient from '@mapbox/mapbox-sdk/lib/classes/mapi-client';
@@ -17,30 +17,60 @@ const TOKEN = process.env.REACT_APP_MAPBOX_API_TOKEN; // Set your mapbox token h
 
 function MapboxCard({ onClickPin }) {
   const [popupInfo, setPopupInfo] = useState(null);
+  const [tasks, setTasks] = useState<Array<Task>>([]);
+
+  useEffect(() => {
+    let list: Array<Task> = [];
+
+    // BEGIN clusters_load
+    for (let i = 0; i < CLUSTERS.length; i++) {
+      let cluster = CLUSTERS[i];
+
+      let { lat, lon } = cluster;
+      let point_size = cluster.yard_radius * 200;
+      let point_color = 
+        cluster.devices < 5 ? "#6838ad":
+        cluster.devices < 10 ? "blue":
+        cluster.devices < 15 ? "orange": "red"
+      let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
+
+      list.push({
+        id: 'clusters_' + i,
+        title: cluster.company,
+        category: cluster.company,
+        lat,
+        lon,
+        point_size,
+        point_color,
+        tooltip_info,
+      });
+    } // END clusters_load
+    setTasks(list);
+  }, []);
 
   const pins = useMemo(
     () =>
-      CLUSTERS.map((cluster, index) => (
+      tasks.map((task, index) => (
         <Marker
           key={`marker-${index}`}
-          longitude={cluster.lon}
-          latitude={cluster.lat}
+          longitude={task.lon}
+          latitude={task.lat}
           anchor="bottom"
           onClick={e => {
             // If we let the click event propagates to the map, it will immediately close the popup
             // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
-            onClickPin(cluster);
+            onClickPin(task);
             // setPopupInfo(cluster);
           }}
         >
           <Pin 
-            radius={cluster.yard_radius} deviceCount={cluster.devices}
-            tooltipText={`${cluster.company} : ${cluster.devices} devices`}
+            size={task.point_size} color={task.point_color}
+            tooltipText={task.tooltip_info}
           />
         </Marker>
       )),
-    []
+    [tasks]
   );
 
   return (

@@ -13,14 +13,10 @@ const pinStyle = {
   zIndex: 5,
 };
 
-function Pin({radius = 20, deviceCount, tooltipText=''}) { 
-  let r = radius * 200;
-  r = r > 8 ? r : 8;
+function Pin({size = 20, color='blue', tooltipText=''}) { 
+  let r = size;
+  r = r > 8 ? r : 8; // minimum value
 
-  const color = 
-    deviceCount < 5 ? "#6838ad":
-    deviceCount < 10 ? "blue":
-    deviceCount < 15 ? "orange": "red"
   return (
     <Tooltip title={tooltipText} placement="top">
       <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
