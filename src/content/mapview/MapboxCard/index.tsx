@@ -128,7 +128,9 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
           pitch: 0
         }}
         // mapStyle="mapbox://styles/mapbox/dark-v9"
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        // mapStyle="mapbox://styles/mapbox/streets-v9"
+        // mapStyle="mapbox://styles/mapbox/satellite-v9"
+        mapStyle="mapbox://styles/mapbox/satellite-streets-v12"
         mapboxAccessToken={TOKEN}
             style={{ height: "100vh", width: "100%" }}
       >
