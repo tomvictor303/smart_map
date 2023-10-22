@@ -15,7 +15,11 @@ import CLUSTERS from './clusters.json';
 
 const TOKEN = process.env.REACT_APP_MAPBOX_API_TOKEN; // Set your mapbox token here
 
-function MapboxCard({ onClickPin }) {
+export interface MapboxCardProps {
+  onClickPin: (task: Task) => void;
+}
+
+function MapboxCard({ onClickPin }: MapboxCardProps) {
   const [popupInfo, setPopupInfo] = useState(null);
   const [tasks, setTasks] = useState<Array<Task>>([]);
 

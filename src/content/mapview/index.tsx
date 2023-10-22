@@ -16,15 +16,11 @@ const MapviewWrapper = styled(Box)(
 );
 
 function Mapview() {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Array<Task>>([]);
 
-  const onClickMapPin = useCallback((pinData) => {
+  const onClickMapPin = useCallback((task: Task) => {
     setTodos(prevTodos => {
-      return [ ...prevTodos, { 
-        company: pinData.company,
-        lat: pinData.lat,
-        lon: pinData.lon,
-      }]
+      return [ ...prevTodos, task]
     });
   }, []);
 

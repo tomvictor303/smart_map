@@ -17,7 +17,13 @@ import { arrayMoveImmutable } from 'array-move';
 // index prop is not passed to ListItem
 // It 's stopped to pass in SortableElement
 // So I give listIndex
-const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}) => 
+interface SortableItemProps {
+  value: Task;
+  listIndex: number;
+  onClickDeleteTodo: (listIndex: number) => void;
+}
+
+const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}: SortableItemProps) => 
   <ListItem disablePadding 
     secondaryAction={
       <Button variant="outlined"
@@ -33,7 +39,7 @@ const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}) =>
   >
     <ListItemButton>
       <ListItemText 
-        primary={value?.company} 
+        primary={value?.title} 
         secondary={value?.lat + '  ' + value?.lon}
       />
     </ListItemButton>
