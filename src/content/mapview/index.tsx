@@ -20,7 +20,13 @@ function Mapview() {
 
   const onClickMapPin = useCallback((task: Task) => {
     setTodos(prevTodos => {
-      return [ ...prevTodos, task]
+      let alreadyExist = false;
+      for(let i = 0; i < prevTodos.length; i++) {
+        if ( prevTodos[i].id === task.id ) {
+          alreadyExist = true; break;
+        }
+      }
+      return alreadyExist ? prevTodos : [ ...prevTodos, task]
     });
   }, []);
 
