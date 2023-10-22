@@ -27,60 +27,68 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
   useEffect(() => {
     let list: Array<Task> = [];
 
-    // BEGIN clusters_dataset_load
-    // for (let i = 0; i < CLUSTERS.length; i++) {
-    //   let cluster = CLUSTERS[i];
+    let params: any = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop as string),
+    });
 
-    //   let { lat, lon } = cluster;
-    //   let point_size = cluster.yard_radius * 200;
-    //   let point_color = 
-    //     cluster.devices < 5 ? "#6838ad":
-    //     cluster.devices < 10 ? "blue":
-    //     cluster.devices < 15 ? "orange": "red"
-    //   let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
+    if (!params.dataset || params.dataset === 'clusters') {
+      // BEGIN clusters_dataset_load
+      for (let i = 0; i < CLUSTERS.length; i++) {
+        let cluster = CLUSTERS[i];
 
-    //   list.push({
-    //     id: 'clusters_' + i,
-    //     title: cluster.company,
-    //     category: cluster.geo_fence,
-    //     lat,
-    //     lon,
-    //     point_size,
-    //     point_color,
-    //     tooltip_info,
-    //   });
-    // } // END clusters_dataset_load
+        let { lat, lon } = cluster;
+        let point_size = cluster.yard_radius * 200;
+        let point_color = 
+          cluster.devices < 5 ? "#6838ad":
+          cluster.devices < 10 ? "blue":
+          cluster.devices < 15 ? "orange": "red"
+        let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
 
-    // BEGIN devices_dataset_load
-    for (let i = 0; i < DEVICES.length; i++) {
-      let device = DEVICES[i];
+        list.push({
+          id: 'clusters_' + i,
+          title: cluster.company,
+          category: cluster.geo_fence,
+          lat,
+          lon,
+          point_size,
+          point_color,
+          tooltip_info,
+        });
+      } // END clusters_dataset_load
+    } 
+    else if (params.dataset === 'devices') {
+      // BEGIN devices_dataset_load
+      for (let i = 0; i < DEVICES.length; i++) {
+        let device = DEVICES[i];
 
-      let dll = device["Last Location"] ?? "";
-      dll = dll.replace("http://www.google.com/maps/place/", "");
-      let lat = Number (dll);
-      let lon = Number(device['Location']);
-      if (isNaN(lat) || isNaN(lon)) continue;
-      
-      let device_type = device['Device Type'];
+        let dll = device["Last Location"] ?? "";
+        dll = dll.replace("http://www.google.com/maps/place/", "");
+        let lat = Number (dll);
+        let lon = Number(device['Location']);
+        if (isNaN(lat) || isNaN(lon)) continue;
+        
+        let device_type = device['Device Type'];
 
-      let point_size = 10;
-      let point_color = 
-        device_type === "smart_tractor" ? "red":
-        device_type === "shaker" ? "blue":
-        device_type === "weed_sprayer" ? "orange": "#6838ad"
-      let tooltip_info = `${device['DEVICE_NAME']} (${device['Alias']}) : ${device_type} `
+        let point_size = 10;
+        let point_color = 
+          device_type === "smart_tractor" ? "red":
+          device_type === "shaker" ? "blue":
+          device_type === "weed_sprayer" ? "orange": "#6838ad"
+        let tooltip_info = `${device['DEVICE_NAME']} (${device['Alias']}) : ${device_type} `
 
-      list.push({
-        id: 'clusters_' + i,
-        title: `${device['DEVICE_NAME']} (${device['Alias']})`,
-        category: device_type,
-        lat,
-        lon,
-        point_size,
-        point_color,
-        tooltip_info,
-      });
-    } // END devices_dataset_load
+        list.push({
+          id: 'clusters_' + i,
+          title: `${device['DEVICE_NAME']} (${device['Alias']})`,
+          category: device_type,
+          lat,
+          lon,
+          point_size,
+          point_color,
+          tooltip_info,
+        });
+      } // END devices_dataset_load
+    }
+    
     setTasks(list);
   }, []);
 
