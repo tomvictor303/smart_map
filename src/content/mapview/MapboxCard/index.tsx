@@ -12,6 +12,7 @@ import mapboxgl, { Coordinate } from 'mapbox-gl';
 import ControlPanel from './control-panel';
 import Pin from './Pin';
 import CLUSTERS from './clusters.json';
+import DEVICES from './devices.json';
 
 const TOKEN = process.env.REACT_APP_MAPBOX_API_TOKEN; // Set your mapbox token here
 
@@ -26,29 +27,60 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
   useEffect(() => {
     let list: Array<Task> = [];
 
-    // BEGIN clusters_load
-    for (let i = 0; i < CLUSTERS.length; i++) {
-      let cluster = CLUSTERS[i];
+    // BEGIN clusters_dataset_load
+    // for (let i = 0; i < CLUSTERS.length; i++) {
+    //   let cluster = CLUSTERS[i];
 
-      let { lat, lon } = cluster;
-      let point_size = cluster.yard_radius * 200;
+    //   let { lat, lon } = cluster;
+    //   let point_size = cluster.yard_radius * 200;
+    //   let point_color = 
+    //     cluster.devices < 5 ? "#6838ad":
+    //     cluster.devices < 10 ? "blue":
+    //     cluster.devices < 15 ? "orange": "red"
+    //   let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
+
+    //   list.push({
+    //     id: 'clusters_' + i,
+    //     title: cluster.company,
+    //     category: cluster.geo_fence,
+    //     lat,
+    //     lon,
+    //     point_size,
+    //     point_color,
+    //     tooltip_info,
+    //   });
+    // } // END clusters_dataset_load
+
+    // BEGIN devices_dataset_load
+    for (let i = 0; i < DEVICES.length; i++) {
+      let device = DEVICES[i];
+
+      let dll = device["Last Location"] ?? "";
+      dll = dll.replace("http://www.google.com/maps/place/", "");
+      let lat = Number (dll);
+      let lon = Number(device['Location']);
+      if (isNaN(lat) || isNaN(lon)) continue;
+      
+      let device_type = device['Device Type'];
+
+      let point_size = 10;
       let point_color = 
-        cluster.devices < 5 ? "#6838ad":
-        cluster.devices < 10 ? "blue":
-        cluster.devices < 15 ? "orange": "red"
-      let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
+        device_type === "smart_tractor" ? "red":
+        device_type === "shaker" ? "blue":
+        device_type === "weed_sprayer" ? "orange": "#6838ad"
+      let tooltip_info = `${device['DEVICE_NAME']} (${device['Alias']}) : ${device_type} `
 
       list.push({
         id: 'clusters_' + i,
-        title: cluster.company,
-        category: cluster.company,
+        title: `${device['DEVICE_NAME']} (${device['Alias']})`,
+        category: device_type,
         lat,
         lon,
         point_size,
         point_color,
         tooltip_info,
       });
-    } // END clusters_load
+    } // END devices_dataset_load
     setTasks(list);
   }, []);
 
