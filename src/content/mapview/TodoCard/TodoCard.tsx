@@ -1,4 +1,4 @@
-import { Box, Container, Card, Divider, Stack } from '@mui/material';
+import { Box, Container, Card, Divider, Stack, Chip } from '@mui/material';
 import { useState, useCallback } from 'react';
 
 import { styled } from '@mui/material/styles';
@@ -46,17 +46,25 @@ const SortableItem = SortableElement(({value, meterToNext, isLastItem, onClickDe
         <ListItemText 
           primary={value?.title} 
           secondary={<>
-            <Box>{value?.lat + '  ' + value?.lon}</Box>
-            {
-              !isLastItem ? (                
-                <Box>
-                  <Stack direction={'row'} spacing={1}>
-                    <ArrowDownwardIcon fontSize="small"/> 
-                    <Typography>{Number(meterToNext/1000).toFixed(1) + ' km'}</Typography>
-                  </Stack>
-                </Box>
-              ) : ""
-            }
+            <Box>
+              <Typography color="primary">{value?.category}</Typography>
+            </Box>
+            <Stack direction={'row'} spacing={1}>
+              <Box>
+                {value?.lat + '  ' + value?.lon} 
+              </Box>
+              
+              {
+                !isLastItem ? (                
+                  <Box>
+                    <Stack direction={'row'} >
+                      <ArrowDownwardIcon fontSize="small"/> 
+                      <Typography>{Number(meterToNext/1000).toFixed(1) + ' km'}</Typography>
+                    </Stack>
+                  </Box>
+                ) : ""
+              }
+            </Stack>
           </>}
         />
       </ListItemButton>
