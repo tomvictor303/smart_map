@@ -22,7 +22,7 @@ const DistCard = ({ items }) => {
       <Divider />
       <CardContent> 
         {list.map((value, index) => (<>            
-          <Box textAlign={'right'} marginBottom={1}>
+          <Box key={index} textAlign={'right'} marginBottom={1}>
             <Typography >
               {Number(value/1000).toFixed(1) + ' km'}
             </Typography>

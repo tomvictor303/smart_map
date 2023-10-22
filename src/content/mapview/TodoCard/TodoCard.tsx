@@ -49,7 +49,7 @@ const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
   return (
     <List>
       {items.map((value, index) => (<>
-        <SortableItem key={`item-${index}`} index={index} value={value} onClickDeleteTodo={onClickDeleteTodo}/>
+        <SortableItem key={index} index={index} value={value} onClickDeleteTodo={onClickDeleteTodo}/>
       </>))}
     </List>
   );
