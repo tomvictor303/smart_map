@@ -24,8 +24,8 @@ function Mapview() {
     });
   }, []);
 
-  const onClickDeleteTodo = useCallback((deleteIndex) => {
-    setTodos(prevTodos => prevTodos.filter((value, index) => index !== deleteIndex));
+  const onClickDeleteTodo = useCallback((deleteId: string) => {
+    setTodos(prevTodos => prevTodos.filter((value: Task, index: number) => value.id !== deleteId));
   }, []);
 
   return (

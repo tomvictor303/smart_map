@@ -19,18 +19,17 @@ import { arrayMoveImmutable } from 'array-move';
 // So I give listIndex
 interface SortableItemProps {
   value: Task;
-  listIndex: number;
-  onClickDeleteTodo: (listIndex: number) => void;
+  onClickDeleteTodo: (deleteId: string) => void;
 }
 
-const SortableItem = SortableElement(({value, listIndex, onClickDeleteTodo}: SortableItemProps) => 
+const SortableItem = SortableElement(({value, onClickDeleteTodo}: SortableItemProps) => 
   <ListItem disablePadding 
     secondaryAction={
       <Button variant="outlined"
         size="small"
         style={{minWidth: "32px", padding: 5}}
         onClick={e => {
-          onClickDeleteTodo?.(listIndex);
+          onClickDeleteTodo?.(value?.id);
         }}
       >
         <DeleteIcon />
@@ -50,7 +49,7 @@ const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
   return (
     <List>
       {items.map((value, index) => (<>
-        <SortableItem key={`item-${index}`} index={index} value={value} listIndex={index} onClickDeleteTodo={onClickDeleteTodo}/>
+        <SortableItem key={`item-${index}`} index={index} value={value} onClickDeleteTodo={onClickDeleteTodo}/>
       </>))}
     </List>
   );
