@@ -18,7 +18,7 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false }) {
   r = r > 8 ? r : 8; // minimum value
 
   return (
-    <Tooltip title={tooltipText} placement="top">
+    <Tooltip title={tooltipText} placement="top" disableInteractive>
       <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
         {/* <path d={ICON} /> */}
         <circle cx={r} cy={r} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={3}/>
