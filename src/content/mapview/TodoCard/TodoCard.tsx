@@ -10,46 +10,74 @@ import Typography from '@mui/material/Typography';
 import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import InboxIcon from '@mui/icons-material/Inbox';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import { arrayMoveImmutable } from 'array-move';
+
+import getPreciseDistance from 'geolib/es/getPreciseDistance';
 
 // index prop is not passed to ListItem
 // It 's stopped to pass in SortableElement
 // So I give listIndex
 interface SortableItemProps {
   value: Task;
+  meterToNext: number;
   onClickDeleteTodo: (deleteId: string) => void;
 }
 
-const SortableItem = SortableElement(({value, onClickDeleteTodo}: SortableItemProps) => 
-  <ListItem disablePadding 
-    secondaryAction={
-      <Button variant="outlined"
-        size="small"
-        style={{minWidth: "32px", padding: 5}}
-        onClick={e => {
-          onClickDeleteTodo?.(value?.id);
-        }}
-      >
-        <DeleteIcon />
-      </Button>
-    }
-  >
-    <ListItemButton>
-      <ListItemText 
-        primary={value?.title} 
-        secondary={value?.lat + '  ' + value?.lon}
-      />
-    </ListItemButton>
-  </ListItem>
+const SortableItem = SortableElement(({value, meterToNext, onClickDeleteTodo}: SortableItemProps) => 
+  <>    
+    <ListItem disablePadding 
+      secondaryAction={
+        <Button variant="outlined"
+          size="small"
+          style={{minWidth: "32px", padding: 5}}
+          onClick={e => {
+            onClickDeleteTodo?.(value?.id);
+          }}
+        >
+          <DeleteIcon />
+        </Button>
+      }
+    >
+      <ListItemButton>
+        <ListItemText 
+          primary={value?.title} 
+          secondary={<>
+            <Box>{value?.lat + '  ' + value?.lon}</Box>
+            {
+              meterToNext ? (                
+                <Box>
+                  <Stack direction={'row'} spacing={1}>
+                    <ArrowDownwardIcon fontSize="small"/> 
+                    <Typography>{Number(meterToNext/1000).toFixed(1) + ' km'}</Typography>
+                  </Stack>
+                </Box>
+              ) : ""
+            }
+          </>}
+        />
+      </ListItemButton>
+    </ListItem>
+  </>
 );
 
 const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
   return (
     <List>
       {items.map((value, index) => (<>
-        <SortableItem key={index} index={index} value={value} onClickDeleteTodo={onClickDeleteTodo}/>
+        <SortableItem 
+          key={index} index={index} 
+          value={value} 
+          onClickDeleteTodo={onClickDeleteTodo}
+          meterToNext={index < items.length - 1 ? 
+            getPreciseDistance(
+              { latitude: items[index].lat, longitude: items[index].lon },
+              { latitude: items[index + 1].lat, longitude: items[index + 1].lon }
+            ): 0
+          }
+        />
       </>))}
     </List>
   );
@@ -63,7 +91,7 @@ const TodoCard = ({items, setItems, onClickDeleteTodo}) => {
   }, [items]);
 
   return <>
-    <Card sx={{ width: "100%", height: '50vh', borderRadius: 0, borderColor: "red", overflowY: "auto" }}>
+    <Card sx={{ width: "100%", height: '100vh', borderRadius: 0, borderColor: "red", overflowY: "auto" }}>
       <CardContent>        
         <SortableList items={items} onSortEnd={onSortEnd} onClickDeleteTodo={onClickDeleteTodo}/>
       </CardContent>
