@@ -1,7 +1,7 @@
 import { Box, Button, Container, Grid, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 // mapbox
 import Map, { Marker, Popup, NavigationControl, FullscreenControl, ScaleControl, GeolocateControl } from 'react-map-gl';
 import MapboxClient from '@mapbox/mapbox-sdk/lib/classes/mapi-client';
@@ -92,6 +92,17 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
     setTasks(list);
   }, []);
 
+  const onClickMarker = useCallback((task) => {
+    setTasks(prevTasks => {
+      let nextTasks = [...prevTasks];
+      for (let i = 0; i < nextTasks.length; i++) {
+        nextTasks[i].selected = nextTasks[i].id === task.id
+      }
+      return nextTasks;
+    });
+    onClickPin(task);
+  }, []);
+
   const pins = useMemo(
     () =>
       tasks.map((task, index) => (
@@ -104,17 +115,18 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
             // If we let the click event propagates to the map, it will immediately close the popup
             // with `closeOnClick: true`
             e.originalEvent.stopPropagation();
-            onClickPin(task);
+            onClickMarker(task);
             // setPopupInfo(cluster);
           }}
         >
           <Pin 
             size={task.point_size} color={task.point_color}
             tooltipText={task.tooltip_info}
+            selected={task.selected}
           />
         </Marker>
       )),
-    [tasks]
+    [tasks, onClickMarker]
   );
 
   return (

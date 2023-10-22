@@ -13,7 +13,7 @@ const pinStyle = {
   zIndex: 5,
 };
 
-function Pin({size = 20, color='blue', tooltipText=''}) { 
+function Pin({size = 20, color='blue', tooltipText='', selected=false }) { 
   let r = size;
   r = r > 8 ? r : 8; // minimum value
 
@@ -21,7 +21,7 @@ function Pin({size = 20, color='blue', tooltipText=''}) {
     <Tooltip title={tooltipText} placement="top">
       <svg height={r*2} viewBox={`0 0 ${r*2} ${r*2}`} style={pinStyle}>
         {/* <path d={ICON} /> */}
-        <circle cx={r} cy={r} r={r}  width="3" fill={color} />
+        <circle cx={r} cy={r} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={3}/>
       </svg>
     </Tooltip>
   );
