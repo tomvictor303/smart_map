@@ -77,7 +77,7 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
         let tooltip_info = `${device['DEVICE_NAME']} (${device['Alias']}) : ${device_type} `
 
         list.push({
-          id: 'clusters_' + i,
+          id: 'devices_' + i,
           title: `${device['DEVICE_NAME']} (${device['Alias']})`,
           category: device_type,
           lat,
