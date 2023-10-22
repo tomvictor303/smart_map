@@ -23,10 +23,11 @@ import getPreciseDistance from 'geolib/es/getPreciseDistance';
 interface SortableItemProps {
   value: Task;
   meterToNext: number;
+  isLastItem: boolean;
   onClickDeleteTodo: (deleteId: string) => void;
 }
 
-const SortableItem = SortableElement(({value, meterToNext, onClickDeleteTodo}: SortableItemProps) => 
+const SortableItem = SortableElement(({value, meterToNext, isLastItem, onClickDeleteTodo}: SortableItemProps) => 
   <>    
     <ListItem disablePadding 
       secondaryAction={
@@ -47,7 +48,7 @@ const SortableItem = SortableElement(({value, meterToNext, onClickDeleteTodo}: S
           secondary={<>
             <Box>{value?.lat + '  ' + value?.lon}</Box>
             {
-              meterToNext ? (                
+              !isLastItem ? (                
                 <Box>
                   <Stack direction={'row'} spacing={1}>
                     <ArrowDownwardIcon fontSize="small"/> 
@@ -77,6 +78,7 @@ const SortableList = SortableContainer(({items, onClickDeleteTodo}) => {
               { latitude: items[index + 1].lat, longitude: items[index + 1].lon }
             ): 0
           }
+          isLastItem={ index === items.length - 1}
         />
       </>))}
     </List>
