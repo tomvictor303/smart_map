@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import zIndex from '@mui/material/styles/zIndex';
 import * as React from 'react';
 
@@ -13,7 +13,7 @@ const pinStyle = {
   // zIndex: 5,
 };
 
-function Pin({size = 20, color='blue', tooltipText='', selected=false }) { 
+function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText='', labelVisible = true }) { 
   const strokeWidth = 3;
   let r = size;
   r = r > 8 ? r : 8; // minimum value
@@ -31,10 +31,19 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false }) {
 
   return (
     <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
-      <svg height={r*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
-        {/* <path d={ICON} /> */}
-        <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={strokeWidth}/>
-      </svg>
+      <>
+        <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
+          {/* <path d={ICON} /> */}
+          <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={strokeWidth}/>
+        </svg>
+        {
+          labelVisible ? (
+            <Typography color='white' textAlign={'center'} fontSize={'14px'} lineHeight={'16px'} style={{position:'absolute', top: (r + strokeWidth)*2, width: '100%'}}>
+              {labelText}
+            </Typography>
+          ) : <></>
+        }
+      </>      
     </Tooltip>
   );
 }

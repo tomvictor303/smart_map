@@ -34,6 +34,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
     pitch: 0
   };
   const [viewState, setViewState] = useState(initialViewState);
+  const [markerLabelVisible, setMarkerLabelVisible] = useState<boolean>(false);
 
   useEffect(() => {
     let list: Array<Task> = [];
@@ -109,12 +110,18 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
           <Pin 
             size={task.marker_size} color={task.marker_color}
             tooltipText={task.tool_tip}
+            labelText={task.label}
+            labelVisible={markerLabelVisible}
             selected={checkIfSelected(task)}
           />
         </Marker>
       )),
-    [tasks, todos, onClickMarker, checkIfSelected]
+    [tasks, todos, markerLabelVisible, onClickMarker, checkIfSelected]
   );
+
+  useEffect(() => {
+    setMarkerLabelVisible( viewState.zoom >= 8 ); // For performance, we do not pass ViewState directly into pin memo dependency.
+  }, [ viewState.zoom ]);
 
   const lineData: FeatureCollection = {
     type: 'FeatureCollection',
