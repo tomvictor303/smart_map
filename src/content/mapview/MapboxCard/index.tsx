@@ -42,8 +42,6 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         }; 
 
         task.marker_size = task.marker_size * 2;
-        task.tool_tip = task.tool_tip ?? '';
-        task.tool_tip = task.tool_tip.replace(/\\n/g, ' ');
         list.push(task);
       } // END clusters_dataset_load
     } 
@@ -56,8 +54,6 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         }; 
 
         task.marker_size = task.marker_size * 2;
-        task.tool_tip = task.tool_tip ?? '';
-        task.tool_tip = task.tool_tip.replace(/\\n/g, ' ');
         list.push(task);
       } // END devices_dataset_load
     }

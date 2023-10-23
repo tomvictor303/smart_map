@@ -18,8 +18,19 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false }) {
   let r = size;
   r = r > 8 ? r : 8; // minimum value
 
+  const pp = tooltipText.split(/\\n/g);
+  const tooltipTextJsx = (
+    <div>
+      {pp.map((line, index) => ( 
+        <div key={index}>
+          {line}
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <Tooltip title={tooltipText} placement="top" disableInteractive>
+    <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
       <svg height={r*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
         {/* <path d={ICON} /> */}
         <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={strokeWidth}/>
