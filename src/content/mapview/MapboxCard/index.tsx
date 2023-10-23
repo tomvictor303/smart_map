@@ -36,58 +36,27 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
     if (!params.dataset || params.dataset === 'clusters') {
       // BEGIN clusters_dataset_load
       for (let i = 0; i < CLUSTERS.length; i++) {
-        let cluster = CLUSTERS[i];
-
-        let { lat, lon } = cluster;
-        let point_size = cluster.yard_radius * 200;
-        let point_color = 
-          cluster.devices < 5 ? "#6838ad":
-          cluster.devices < 10 ? "blue":
-          cluster.devices < 15 ? "orange": "red"
-        let tooltip_info = `${cluster.company} : ${cluster.devices} devices`
-
-        list.push({
+        let task = { 
+          ...CLUSTERS[i],
           id: 'clusters_' + i,
-          title: cluster.company,
-          category: cluster.geo_fence,
-          lat,
-          lon,
-          point_size,
-          point_color,
-          tooltip_info,
-        });
+          title: CLUSTERS[i].category,
+        }; 
+
+        task.marker_size = task.marker_size * 2;
+        list.push(task);
       } // END clusters_dataset_load
     } 
     else if (params.dataset === 'devices') {
       // BEGIN devices_dataset_load
       for (let i = 0; i < DEVICES.length; i++) {
-        let device = DEVICES[i];
-
-        let dll = device["Last Location"] ?? "";
-        dll = dll.replace("http://www.google.com/maps/place/", "");
-        let lat = Number (dll);
-        let lon = Number(device['Location']);
-        if (isNaN(lat) || isNaN(lon)) continue;
-        
-        let device_type = device['Device Type'];
-
-        let point_size = 10;
-        let point_color = 
-          device_type === "smart_tractor" ? "red":
-          device_type === "shaker" ? "blue":
-          device_type === "weed_sprayer" ? "orange": "#6838ad"
-        let tooltip_info = `${device['DEVICE_NAME']} (${device['Alias']}) : ${device_type} `
-
-        list.push({
+        let task = { 
+          ...DEVICES[i],
           id: 'devices_' + i,
-          title: `${device['DEVICE_NAME']} (${device['Alias']})`,
-          category: device_type,
-          lat,
-          lon,
-          point_size,
-          point_color,
-          tooltip_info,
-        });
+          title: DEVICES[i].category,
+        }; 
+
+        task.marker_size = task.marker_size * 2;
+        list.push(task);
       } // END devices_dataset_load
     }
     
@@ -131,8 +100,8 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
           }}
         >
           <Pin 
-            size={task.point_size} color={task.point_color}
-            tooltipText={task.tooltip_info}
+            size={task.marker_size} color={task.marker_color}
+            tooltipText={task.tool_tip}
             selected={checkIfSelected(task)}
           />
         </Marker>

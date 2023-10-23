@@ -2,12 +2,12 @@ type Task = {
   id: string;
   category: string;
   title: string;
+  info: string;
   lat: number;
   lon: number;
-  point_size?: number;
-  point_color?: string;
-  details?: string;
-  tooltip_info?: string;
+  marker_size?: number;
+  marker_color?: string;
+  tool_tip?: string;
   // For view...  
   selected?: boolean; // Deprecated
 }
