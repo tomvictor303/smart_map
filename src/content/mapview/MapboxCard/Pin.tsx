@@ -10,7 +10,7 @@ const pinStyle = {
   cursor: 'pointer',
   fill: '#d00',
   stroke: 'none',
-  zIndex: 5,
+  // zIndex: 5,
 };
 
 function Pin({size = 20, color='blue', tooltipText='', selected=false }) { 

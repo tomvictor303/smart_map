@@ -3,10 +3,11 @@ import { Link as RouterLink } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { useState, useMemo, useEffect, useCallback } from 'react';
 // mapbox
-import Map, { Marker, Popup, NavigationControl, FullscreenControl, ScaleControl, GeolocateControl } from 'react-map-gl';
+import Map, { Marker, Popup, NavigationControl, FullscreenControl, ScaleControl, GeolocateControl, Source, Layer } from 'react-map-gl';
 import MapboxClient from '@mapbox/mapbox-sdk/lib/classes/mapi-client';
 import GeocodingService, { GeocodeFeature, GeocodeRequest } from '@mapbox/mapbox-sdk/services/geocoding';
-import mapboxgl, { Coordinate } from 'mapbox-gl';
+import mapboxgl, { CircleLayer, Coordinate, LineLayer } from 'mapbox-gl';
+import type {FeatureCollection} from 'geojson';
 (mapboxgl as any).workerClass = require('worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker').default;
 
 import ControlPanel from './control-panel';
@@ -120,7 +121,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
           key={`marker-${index}`}
           longitude={task.lon}
           latitude={task.lat}
-          anchor="bottom"
+          anchor="center"
           onClick={e => {
             // If we let the click event propagates to the map, it will immediately close the popup
             // with `closeOnClick: true`
@@ -138,6 +139,29 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
       )),
     [tasks, todos, onClickMarker, checkIfSelected]
   );
+
+  const lineData: FeatureCollection = {
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: {
+          type: 'LineString',
+          coordinates: todos.map((todo, index) => [todo.lon, todo.lat])
+        },
+        properties: {}
+      }
+    ]
+  };
+  
+  const layerStyle: LineLayer = {
+    id: 'line-line-data',
+    type: 'line',
+    paint: {
+    'line-width': 2,
+    'line-color': '#ffffff'
+    }
+  };
 
   return (
     <>
@@ -160,8 +184,13 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         <FullscreenControl position="top-right" />
         <NavigationControl position="top-right" />
         <ScaleControl position="bottom-right" />
-
-        {pins}
+        
+        <Box style={{zIndex: 666}}>
+          <Source id="my-data" type="geojson" data={lineData}>
+            {pins}
+            <Layer {...layerStyle} />
+          </Source>
+        </Box>
 
         {popupInfo && (
           <Popup
