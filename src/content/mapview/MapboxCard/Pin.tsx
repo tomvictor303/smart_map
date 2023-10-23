@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@mui/material';
+import { Box, Tooltip, Typography } from '@mui/material';
 import zIndex from '@mui/material/styles/zIndex';
 import * as React from 'react';
 
@@ -31,7 +31,7 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText
 
   return (
     <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
-      <>
+      <Box>
         <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
           {/* <path d={ICON} /> */}
           <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={strokeWidth}/>
@@ -43,7 +43,7 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText
             </Typography>
           ) : <></>
         }
-      </>      
+      </Box>      
     </Tooltip>
   );
 }
