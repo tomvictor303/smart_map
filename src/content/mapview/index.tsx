@@ -48,7 +48,7 @@ function Mapview() {
           </Stack>
         </Grid>
         <Grid item xs={9}>
-          <MapboxCard onClickPin={onClickMapPin} />
+          <MapboxCard onClickPin={onClickMapPin} todos={todos}/>
         </Grid>  
       </Grid>
     </MapviewWrapper>

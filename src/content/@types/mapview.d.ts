@@ -8,6 +8,6 @@ type Task = {
   point_color?: string;
   details?: string;
   tooltip_info?: string;
-  // For view...
-  selected?: boolean;
+  // For view...  
+  selected?: boolean; // Deprecated
 }

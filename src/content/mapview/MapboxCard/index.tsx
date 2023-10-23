@@ -17,10 +17,11 @@ import DEVICES from './devices.json';
 const TOKEN = process.env.REACT_APP_MAPBOX_API_TOKEN; // Set your mapbox token here
 
 export interface MapboxCardProps {
+  todos: Array<Task>;
   onClickPin: (task: Task) => void;
 }
 
-function MapboxCard({ onClickPin }: MapboxCardProps) {
+function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
   const [popupInfo, setPopupInfo] = useState(null);
   const [tasks, setTasks] = useState<Array<Task>>([]);
 
@@ -93,15 +94,24 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
   }, []);
 
   const onClickMarker = useCallback((task) => {
-    setTasks(prevTasks => {
-      let nextTasks = [...prevTasks];
-      for (let i = 0; i < nextTasks.length; i++) {
-        nextTasks[i].selected = nextTasks[i].id === task.id
-      }
-      return nextTasks;
-    });
+    // setTasks(prevTasks => {
+    //   let nextTasks = [...prevTasks];
+    //   for (let i = 0; i < nextTasks.length; i++) {
+    //     if (nextTasks[i].id === task.id)
+    //       nextTasks[i].selected = true;
+    //   }
+    //   return nextTasks;
+    // });
     onClickPin(task);
   }, []);
+
+  const checkIfSelected = useCallback((task: Task): boolean => {
+    for (let i = 0; i < todos.length; i++) {
+      if (todos[i].id === task.id)
+        return true;
+    }
+    return false;
+  }, [todos]);
 
   const pins = useMemo(
     () =>
@@ -122,11 +132,11 @@ function MapboxCard({ onClickPin }: MapboxCardProps) {
           <Pin 
             size={task.point_size} color={task.point_color}
             tooltipText={task.tooltip_info}
-            selected={task.selected}
+            selected={checkIfSelected(task)}
           />
         </Marker>
       )),
-    [tasks, onClickMarker]
+    [tasks, todos, onClickMarker, checkIfSelected]
   );
 
   return (
