@@ -39,10 +39,11 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         let task = { 
           ...CLUSTERS[i],
           id: 'clusters_' + i,
-          title: CLUSTERS[i].category,
         }; 
 
         task.marker_size = task.marker_size * 2;
+        task.tool_tip = task.tool_tip ?? '';
+        task.tool_tip = task.tool_tip.replace(/\\n/g, ' ');
         list.push(task);
       } // END clusters_dataset_load
     } 
@@ -52,10 +53,11 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         let task = { 
           ...DEVICES[i],
           id: 'devices_' + i,
-          title: DEVICES[i].category,
         }; 
 
         task.marker_size = task.marker_size * 2;
+        task.tool_tip = task.tool_tip ?? '';
+        task.tool_tip = task.tool_tip.replace(/\\n/g, ' ');
         list.push(task);
       } // END devices_dataset_load
     }

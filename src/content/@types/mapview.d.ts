@@ -1,7 +1,6 @@
 type Task = {
   id: string;
   category: string;
-  title: string;
   info: string;
   lat: number;
   lon: number;

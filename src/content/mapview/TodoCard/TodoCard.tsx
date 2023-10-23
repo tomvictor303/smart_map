@@ -44,15 +44,15 @@ const SortableItem = SortableElement(({value, meterToNext, isLastItem, onClickDe
     >
       <ListItemButton>
         <ListItemText 
-          primary={value?.title} 
+          primary={value?.category} 
           secondary={<>
             <Box>
-              <Typography color="primary">{value?.category}</Typography>
+              <Typography color="primary">{value?.info}</Typography>
             </Box>
             <Stack direction={'row'} spacing={1}>
-              <Box>
+              {/* <Box>
                 {value?.lat + '  ' + value?.lon} 
-              </Box>
+              </Box> */}
               
               {
                 !isLastItem ? (                
