@@ -26,6 +26,15 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
   const [popupInfo, setPopupInfo] = useState(null);
   const [tasks, setTasks] = useState<Array<Task>>([]);
 
+  const initialViewState = {
+    latitude: 40,
+    longitude: -100,
+    zoom: 3.5,
+    bearing: 0,
+    pitch: 0
+  };
+  const [viewState, setViewState] = useState(initialViewState);
+
   useEffect(() => {
     let list: Array<Task> = [];
 
@@ -83,7 +92,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
 
   const pins = useMemo(
     () =>
-      tasks.map((task, index) => (
+      tasks.map((task: Task, index: number) => (
         <Marker
           key={`marker-${index}`}
           longitude={task.lon}
@@ -133,31 +142,26 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
   return (
     <>
       <Map
-        initialViewState={{
-          latitude: 40,
-          longitude: -100,
-          zoom: 3.5,
-          bearing: 0,
-          pitch: 0
-        }}
+        {...viewState}
+        onMove={evt => setViewState(evt.viewState)}
         // mapStyle="mapbox://styles/mapbox/dark-v9"
         // mapStyle="mapbox://styles/mapbox/streets-v9"
         // mapStyle="mapbox://styles/mapbox/satellite-v9"
         mapStyle="mapbox://styles/mapbox/satellite-streets-v11"
         mapboxAccessToken={TOKEN}
-            style={{ height: "100vh", width: "100%" }}
+        style={{ height: "100vh", width: "100%" }}
       >
         <GeolocateControl position="top-right" />
         <FullscreenControl position="top-right" />
         <NavigationControl position="top-right" />
         <ScaleControl position="bottom-right" />
         
-        <Box style={{zIndex: 666}}>
-          <Source id="my-data" type="geojson" data={lineData}>
-            {pins}
-            <Layer {...layerStyle} />
-          </Source>
-        </Box>
+        
+        <Source id="my-data" type="geojson" data={lineData}>
+          <Layer {...layerStyle} />
+        </Source>
+        
+        {pins}
 
         {popupInfo && (
           <Popup

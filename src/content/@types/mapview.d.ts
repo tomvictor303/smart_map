@@ -2,6 +2,7 @@ type Task = {
   id: string;
   category: string;
   info: string;
+  label: string;
   lat: number;
   lon: number;
   marker_size?: number;
