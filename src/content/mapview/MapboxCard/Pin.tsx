@@ -31,7 +31,7 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText
 
   return (
     <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
-      <div>
+      <div style={{height: (r + strokeWidth)*2}}>
         <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
           {/* <path d={ICON} /> */}
           <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r} fill={'#00000000'} stroke={selected?'#00000000':'#00000000'} strokeWidth={strokeWidth}/>
