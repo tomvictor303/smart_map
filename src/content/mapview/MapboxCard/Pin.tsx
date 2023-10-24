@@ -31,21 +31,56 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText
 
   return (
     <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
-      <Box>
+      <div>
         <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
           {/* <path d={ICON} /> */}
-          <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r} fill={color} stroke={selected?'white':'black'} strokeWidth={strokeWidth}/>
+          <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r} fill={'#00000000'} stroke={selected?'#00000000':'#00000000'} strokeWidth={strokeWidth}/>
         </svg>
         {
           labelVisible ? (
-            <Typography color='white' textAlign={'center'} fontSize={'14px'} lineHeight={'16px'} style={{position:'absolute', top: (r + strokeWidth)*2, width: '100%'}}>
+            <Typography color='white' textAlign={'center'} fontSize={'14px'} lineHeight={'16px'} style={{position:'absolute', top: (r + strokeWidth)*2 + 2, width: '100%'}}>
               {labelText}
             </Typography>
           ) : <></>
         }
-      </Box>      
+      </div>      
     </Tooltip>
   );
 }
+
+// function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText='', labelVisible = true }) { 
+//   const strokeWidth = selected ? 3 : 1;
+//   let r = size;
+//   r = r > 8 ? r : 8; // minimum value
+
+//   const pp = tooltipText.split(/\\n/g);
+//   const tooltipTextJsx = (
+//     <div>
+//       {pp.map((line, index) => ( 
+//         <div key={index}>
+//           {line}
+//         </div>
+//       ))}
+//     </div>
+//   );
+
+//   return (
+//     <Tooltip title={tooltipTextJsx} placement="top" disableInteractive>
+//       <Box>
+//         <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
+//           {/* <path d={ICON} /> */}
+//           <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r} fill={color} stroke={selected?'white':'black'} strokeWidth={strokeWidth}/>
+//         </svg>
+//         {
+//           labelVisible ? (
+//             <Typography color='white' textAlign={'center'} fontSize={'14px'} lineHeight={'16px'} style={{position:'absolute', top: (r + strokeWidth)*2, width: '100%'}}>
+//               {labelText}
+//             </Typography>
+//           ) : <></>
+//         }
+//       </Box>      
+//     </Tooltip>
+//   );
+// }
 
 export default React.memo(Pin);

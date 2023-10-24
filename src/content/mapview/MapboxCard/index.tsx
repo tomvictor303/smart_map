@@ -51,7 +51,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
           id: 'clusters_' + i,
         }; 
 
-        task.marker_size = task.marker_size * 2;
+        task.marker_size = Math.ceil(task.marker_size * 2);
         list.push(task);
       } // END clusters_dataset_load
     } 
@@ -63,7 +63,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
           id: 'devices_' + i,
         }; 
 
-        task.marker_size = task.marker_size * 2;
+        task.marker_size = Math.ceil(task.marker_size * 2);
         list.push(task);
       } // END devices_dataset_load
     }
@@ -123,28 +123,109 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
     setMarkerLabelVisible( viewState.zoom >= 10 ); // For performance, we do not pass ViewState directly into pin memo dependency.
   }, [ viewState.zoom ]);
 
-  const lineData: FeatureCollection = {
-    type: 'FeatureCollection',
-    features: [
-      {
-        type: 'Feature',
-        geometry: {
-          type: 'LineString',
-          coordinates: todos.map((todo, index) => [todo.lon, todo.lat])
-        },
-        properties: {}
+  // BEGIN useMemo_extraLayers
+  const extraLayers = useMemo(() => {
+    const lineData: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: [
+        {
+          type: 'Feature',
+          geometry: {
+            type: 'LineString',
+            coordinates: todos.map((todo, index) => [todo.lon, todo.lat])
+          },
+          properties: {}
+        }
+      ]
+    };
+    
+    const lineLayerStyle: LineLayer = {
+      id: 'line-line-data',
+      type: 'line',
+      paint: {
+      'line-width': 2,
+      'line-color': '#ffffff'
       }
-    ]
-  };
+    };
   
-  const layerStyle: LineLayer = {
-    id: 'line-line-data',
-    type: 'line',
-    paint: {
-    'line-width': 2,
-    'line-color': '#ffffff'
+    const unselectedTasks = [], selectedTasks = [];
+    for (let i = 0; i < tasks.length; i++) {
+      if ( checkIfSelected(tasks[i])) {
+        selectedTasks.push(tasks[i]);
+      } else {
+        unselectedTasks.push(tasks[i]);
+      }
     }
-  };
+  
+    const circlesData1: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: unselectedTasks.map((task: Task, index: number) => {
+        let r = task.marker_size;
+        r = r > 8 ? r : 8;
+        let circle_radius = r; 
+  
+        return {
+          type: "Feature", 
+          properties: { circle_radius, marker_color: task.marker_color}, 
+          geometry: { type: "Point", "coordinates": [ task.lon, task.lat ] }
+        };
+      })
+    };
+  
+    const circleLayerStyle1: CircleLayer = {
+      id: 'cirle-layer-1',
+      type: 'circle',
+      paint: {
+        'circle-radius': ['number', ['get', 'circle_radius'], 8],
+        'circle-color': ['string', ['get', 'marker_color'], 'blue'],
+        'circle-stroke-color': 'black',
+        'circle-stroke-width': 1,
+      }
+    };
+  
+    const circlesData2: FeatureCollection = {
+      type: 'FeatureCollection',
+      features: selectedTasks.map((task: Task, index: number) => {
+        let r = task.marker_size;
+        r = r > 8 ? r : 8;
+        let circle_radius = r; 
+  
+        return {
+          type: "Feature", 
+          properties: { circle_radius, marker_color: task.marker_color}, 
+          geometry: { type: "Point", "coordinates": [ task.lon, task.lat ] }
+        };
+      })
+    };
+  
+    const circleLayerStyle2: CircleLayer = {
+      id: 'cirle-layer-2',
+      type: 'circle',
+      paint: {
+        'circle-radius': ['number', ['get', 'circle_radius'], 8],
+        'circle-color': ['string', ['get', 'marker_color'], 'blue'],
+        'circle-stroke-color': 'white',
+        'circle-stroke-width': 3,
+      }
+    };
+
+    return (
+      <>
+        <Source id="circles-data-1" type="geojson" data={circlesData1}>
+          <Layer {...circleLayerStyle1} />
+        </Source>
+        
+        <Source id="my-data" type="geojson" data={lineData}>
+          <Layer {...lineLayerStyle} />
+        </Source>
+
+        <Source id="circles-data-2" type="geojson" data={circlesData2}>
+          <Layer {...circleLayerStyle2} />
+        </Source>
+      </>
+    );
+  }, [tasks, todos]);
+  // END useMemo_extraLayers
 
   return (
     <>
@@ -163,11 +244,8 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
         <NavigationControl position="top-right" />
         <ScaleControl position="bottom-right" />
         
-        
-        <Source id="my-data" type="geojson" data={lineData}>
-          <Layer {...layerStyle} />
-        </Source>
-        
+        {extraLayers}
+
         {pins}
 
         {popupInfo && (
