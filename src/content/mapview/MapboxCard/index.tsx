@@ -120,7 +120,7 @@ function MapboxCard({ todos, onClickPin }: MapboxCardProps) {
   );
 
   useEffect(() => {
-    setMarkerLabelVisible( viewState.zoom >= 8 ); // For performance, we do not pass ViewState directly into pin memo dependency.
+    setMarkerLabelVisible( viewState.zoom >= 10 ); // For performance, we do not pass ViewState directly into pin memo dependency.
   }, [ viewState.zoom ]);
 
   const lineData: FeatureCollection = {

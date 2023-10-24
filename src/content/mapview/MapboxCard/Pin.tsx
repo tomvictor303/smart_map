@@ -14,7 +14,7 @@ const pinStyle = {
 };
 
 function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText='', labelVisible = true }) { 
-  const strokeWidth = 3;
+  const strokeWidth = selected ? 3 : 1;
   let r = size;
   r = r > 8 ? r : 8; // minimum value
 
@@ -34,7 +34,7 @@ function Pin({size = 20, color='blue', tooltipText='', selected=false, labelText
       <Box>
         <svg height={(r + strokeWidth)*2} viewBox={`0 0 ${(r + strokeWidth)*2} ${(r + strokeWidth)*2}`} style={pinStyle}>
           {/* <path d={ICON} /> */}
-          <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r}  width="3" fill={color} stroke={selected?'white':''} strokeWidth={strokeWidth}/>
+          <circle cx={r + strokeWidth} cy={r + strokeWidth} r={r} fill={color} stroke={selected?'white':'black'} strokeWidth={strokeWidth}/>
         </svg>
         {
           labelVisible ? (
